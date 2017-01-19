@@ -4,7 +4,7 @@ This is a Laravel's library that helps to make backend quickly.
 ## Installation
 
 ```sh
-composer require mrphanhieuqt/backend-baker dev
+composer require mrphanhieuqt/backendbaker
 ```
 
 ## Basic Usage
