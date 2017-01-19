@@ -9,7 +9,6 @@
             "email": "hieuphan@smart.net.vn"
         }
     ],
-    "minimum-stability": "dev",
     "require": {
         "php": "^5.6.0 || ^7.0"
     },
