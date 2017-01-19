@@ -1,9 +1,9 @@
 <?php
 
-namespace MrPhan\BackendBaker;
+namespace BackendBaker;
 
 use Illuminate\Support\ServiceProvider;
-use MrPhan\BackendBaker\Console\Commands\GenerateCommand;
+use BackendBaker\Console\Commands\GenerateCommand;
 
 class BackendBakerProvider extends ServiceProvider
 {

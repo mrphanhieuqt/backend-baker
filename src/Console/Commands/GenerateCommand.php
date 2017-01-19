@@ -1,6 +1,6 @@
 <?php
 
-namespace MrPhan\BackendBaker\Console\Commands;
+namespace BackendBaker\Console\Commands;
 
 use Illuminate\Console\Command;
 
