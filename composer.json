@@ -1,6 +1,6 @@
 {
     "name": "mrphanhieuqt/backend-baker",
-    "description": "This is a Laravel library that helps to make backend quickly.",
+    "description": "This is a Laravel's library that helps to make backend quickly.",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -9,9 +9,9 @@
             "email": "hieuphan@smart.net.vn"
         }
     ],
-    "minimum-stability": "dev",
+    "minimum-stability": "0.0.1",
     "require": {
-        "php": ">=5.6.0"
+        "php": "^5.6.0 || ^7.0"
     },
     "autoload": {
         "psr-4": {
