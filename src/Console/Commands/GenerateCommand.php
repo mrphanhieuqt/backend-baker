@@ -77,7 +77,11 @@ class GenerateCommand extends Command
         $this->info("Making {$controllerName} ...");
         Utils::makeController($name, $model);
 
+        $this->info("Making views ...");
+        Utils::makeView($name);
 
+        $this->info("Making routes ...");
+        Utils::makeRoute($name);
 
         $this->info("Finished!");
         $this->info("------------------------------------------------");
