@@ -13,7 +13,7 @@ class GenerateCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'admin:generate {name} {--table=}';
+    protected $signature = 'admin:generate {name} {--table=} {--all}';
 
     /**
      * The console command description.
@@ -40,18 +40,46 @@ class GenerateCommand extends Command
     public function handle()
     {
         $name = $this->argument('name');
-        $table = $this->option('table');
-        if(!$table) {
-            $table = $name;
+
+        if(!empty($name)) {
+            $table = $this->option('table');
+            if($name == 'all') {
+                if($table) {
+                    return $this->syntaxError();
+                }
+                // TODO
+            } else {
+                if(!$table) {
+                    $table = $name;
+                }
+                $this->genereateOnePage($name, $table);
+            }
         }
+    }
+
+    private function syntaxError() {
+        $this->info("Syntax error!");
+    }
+
+    /**
+     * @param $name
+     * @param $table
+     */
+    private function genereateOnePage($name, $table) {
         $model = str_singular(studly_case($table));
 
         $this->info("Start to generate {$name} page from table {$table} ...");
 
         $this->info("Making {$model} model from table {$table} ...");
-
         Utils::makeModel($model, $table);
 
-        $this->info('Finished!');
+        $controllerName = studly_case($name).'Controller';
+        $this->info("Making {$controllerName} ...");
+        Utils::makeController($name, $model);
+
+
+
+        $this->info("Finished!");
+        $this->info("------------------------------------------------");
     }
 }

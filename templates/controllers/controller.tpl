@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers;
 
 use App\{{Model}};
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ class {{Page}}Controller extends Controller
      * @return View
      */
     public function index(Request $request) {
-
+        $data = [];
 
         return view('{{page}}.index', $data);
     }
