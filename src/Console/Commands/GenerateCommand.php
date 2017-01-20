@@ -3,6 +3,8 @@
 namespace BackendBaker\Console\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Artisan;
+use BackendBaker\Utils;
 
 class GenerateCommand extends Command
 {
@@ -42,8 +44,13 @@ class GenerateCommand extends Command
         if(!$table) {
             $table = $name;
         }
-        $this->info("Generating {$name} page from table {$table} ...");
+        $model = str_singular(studly_case($table));
 
+        $this->info("Start to generate {$name} page from table {$table} ...");
+
+        $this->info("Making {$model} model from table {$table} ...");
+
+        Utils::makeModel($model, $table);
 
         $this->info('Finished!');
     }
