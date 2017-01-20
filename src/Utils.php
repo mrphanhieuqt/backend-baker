@@ -93,6 +93,7 @@ class Utils {
 
             $tplPageRoute = file_get_contents(dirname(__FILE__)."/../templates/routes/_page.tpl");
             $tplPageRoute = str_replace("{{page}}", $page, $tplPageRoute);
+            $tplPageRoute = str_replace("{{Page}}", studly_case($page), $tplPageRoute);
             $tplContentLines[$numOfLines] = $tplContentLines[$numOfLines-1];
             $tplContentLines[$numOfLines-1] = $tplContentLines[$numOfLines-2];
             $tplContentLines[$numOfLines-2] = $tplPageRoute;
