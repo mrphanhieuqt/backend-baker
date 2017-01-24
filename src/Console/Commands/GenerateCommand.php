@@ -3,8 +3,6 @@
 namespace BackendBaker\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Artisan;
-use BackendBaker\Utils;
 
 class GenerateCommand extends Command
 {
