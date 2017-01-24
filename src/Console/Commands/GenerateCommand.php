@@ -186,6 +186,8 @@ class GenerateCommand extends Command
             mkdir($layoutPath);
         }
 
+        $pageStudly = studly_case($page);
+
         // Layout
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/layouts/admin.tpl");
         file_put_contents($layoutPath.'/admin.blade.php', $tplContent);
@@ -193,6 +195,7 @@ class GenerateCommand extends Command
 
         // Index
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/views/index.tpl");
+        $tplContent = str_replace("{{Page}}", $pageStudly, $tplContent);
         file_put_contents($viewPath.'/index.blade.php', $tplContent);
         $this->info('-> ' . $viewPath.'/index.blade.php');
 
