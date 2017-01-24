@@ -98,9 +98,13 @@ class GenerateCommand extends Command
             mkdir($dst);
         }
 
-        $this->recurseCopy($src.'bootstrap', $dst.'bootstrap');
-        $this->recurseCopy($src.'dist', $dst.'dist');
-        $this->recurseCopy($src.'plugins', $dst.'plugins');
+        $verFile = $dst . '.ver';
+        if(!file_exists($verFile)) {
+            $this->recurseCopy($src.'bootstrap', $dst.'bootstrap');
+            $this->recurseCopy($src.'dist', $dst.'dist');
+            $this->recurseCopy($src.'plugins', $dst.'plugins');
+            file_put_contents($verFile, time());
+        }
         $this->info('');
     }
 
