@@ -13,9 +13,10 @@ class {{Page}}Controller extends Controller
      * @return View
      */
     public function index(Request $request) {
-        $data = [];
+        $limit = env('APP_NUM_PER_PAGE');
+        $data = {{Model}}::paginate($limit);
 
-        return view('{{page}}.index', $data);
+        return view('{{page}}.index', ['data' => $data]);
     }
 
 }

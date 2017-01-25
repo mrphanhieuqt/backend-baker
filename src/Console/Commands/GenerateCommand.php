@@ -192,6 +192,7 @@ class GenerateCommand extends Command
         }
 
         $pageStudly = studly_case($page);
+        $controllerName = $pageStudly.'Controller';
 
         // Layout
         if(!file_exists($layoutPath.'/admin.blade.php')) {
@@ -224,22 +225,31 @@ class GenerateCommand extends Command
         // Index
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/views/index.tpl");
         $tplContent = str_replace("{{Page}}", $pageStudly, $tplContent);
-        $skips = ['created_at', 'updated_at', 'password', 'remember_token'];
-        $data = '<tr>'.PHP_EOL;
+        $skips = ['id', 'created_at', 'updated_at', 'password', 'remember_token'];
+        $data = '<tr>' . PHP_EOL;
+        $data .= '                    <th><input type="checkbox" name="select_all" value="on"></th>' . PHP_EOL;
         foreach ($columns as $column) {
             if(!in_array($column, $skips)) {
                 $thName = str_replace('_', ' ', ucfirst($column));
                 $data .= "                    <th>$thName</th>".PHP_EOL;
             }
         }
+        $data .= "                    <th></th>".PHP_EOL;
         $data .= '                <tr>'.PHP_EOL;
         $data .= '                @if(!empty($data))'.PHP_EOL;
         $data .= '                  @foreach($data as $item)'.PHP_EOL;
+        $data .= '                    <tr>'.PHP_EOL;
+        $data .= '                        <td><input type="checkbox" name="select_item" value="{{$item->id}}"></td>'.PHP_EOL;
         foreach ($columns as $column) {
             if(!in_array($column, $skips)) {
-                $data .= '                    <td>{{$item->' . $column . '}}</td>' . PHP_EOL;
+                $data .= '                        <td>{{$item->' . $column . '}}</td>' . PHP_EOL;
             }
         }
+        $data .= '                        <td class="text-right">'.PHP_EOL;
+        $data .= '                          <a class="btn btn-info" href="{{action(\''.$controllerName.'@edit\', [\'id\'=>$item->id])}}">Edit</a>'.PHP_EOL;
+        $data .= '                          <a class="btn btn-danger" href="{{action(\''.$controllerName.'@delete\', [\'id\'=>$item->id])}}">Delete</a>'.PHP_EOL;
+        $data .= '                        </td>' . PHP_EOL;
+        $data .= '                    <tr/>'.PHP_EOL;
         $data .= '                  @endforeach' . PHP_EOL;
         $data .= '                @endif';
         $tplContent = str_replace("{{data}}", $data, $tplContent);
