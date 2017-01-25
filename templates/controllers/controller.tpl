@@ -19,4 +19,27 @@ class {{Page}}Controller extends Controller
         return view('{{page}}.index', ['data' => $data]);
     }
 
+    /**
+    * @param Request $request
+    * @return View
+    */
+    public function add(Request $request) {
+        $data = null;
+        return view('{{page}}.add', ['data' => $data]);
+    }
+
+    /**
+    * @param Request $request
+    * @return View
+    */
+    public function edit(Request $request, $id) {
+        $data = {{Model}}::find($id);
+        return view('{{page}}.edit', ['data' => $data]);
+    }
+
+    /**
+    * @param Request $request
+    */
+    public function delete(Request $request, $id) {
+    }
 }
