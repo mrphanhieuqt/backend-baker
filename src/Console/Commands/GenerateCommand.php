@@ -72,14 +72,14 @@ class GenerateCommand extends Command
         $this->copyResources();
 
         $this->info("Making {$model} model from table {$table} ...");
-        $this->makeModel($model, $table);
+        $columns = $this->makeModel($model, $table);
 
         $controllerName = studly_case($name).'Controller';
         $this->info("Making {$controllerName} ...");
         $this->makeController($name, $model);
 
         $this->info("Making views ...");
-        $this->makeView($name);
+        $this->makeView($name, $columns);
 
         $this->info("Making routes ...");
         $this->makeRoute($name);
@@ -175,7 +175,7 @@ class GenerateCommand extends Command
     /**
      * @param $page
      */
-    private function makeView($page) {
+    private function makeView($page, $columns) {
         $viewPath = resource_path("views/$page");
         if(!file_exists($viewPath)) {
             mkdir($viewPath);
@@ -186,16 +186,63 @@ class GenerateCommand extends Command
             mkdir($layoutPath);
         }
 
+        $partialPath = resource_path("views/layouts/partials");
+        if(!file_exists($partialPath)) {
+            mkdir($partialPath);
+        }
+
         $pageStudly = studly_case($page);
 
         // Layout
-        $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/layouts/admin.tpl");
-        file_put_contents($layoutPath.'/admin.blade.php', $tplContent);
-        $this->info('-> ' . $layoutPath.'/admin.blade.php');
+        if(!file_exists($layoutPath.'/admin.blade.php')) {
+            $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/layouts/admin.tpl");
+            file_put_contents($layoutPath.'/admin.blade.php', $tplContent);
+            $this->info('-> ' . $layoutPath.'/admin.blade.php');
+        }
+
+        // Partial
+        if(!file_exists($partialPath.'/_left_sidebar.blade.php')) {
+            $tplContent = file_get_contents(dirname(__FILE__) . "/../../../templates/layouts/_left_sidebar.tpl");
+            file_put_contents($partialPath . '/_left_sidebar.blade.php', $tplContent);
+            $this->info('-> ' . $partialPath . '/_left_sidebar.blade.php');
+        }
+
+        // Menu
+        $tplContent = file_get_contents(dirname(__FILE__) . "/../../../templates/layouts/_left_sidebar.tpl");
+        $tplContentLines = explode(PHP_EOL, $tplContent);
+        $lines = count($tplContentLines);
+        for ($i = $lines; $i > $lines - 5; $i--) {
+            $tplContentLines[$i] = $tplContentLines[$i-1];
+        }
+        $tplContentMenu = file_get_contents(dirname(__FILE__) . "/../../../templates/layouts/_left_sidebar_menu.tpl");
+        $tplContentMenu = str_replace("{{page}}", $page, $tplContentMenu);
+        $tplContentMenu = str_replace("{{Page}}", $pageStudly, $tplContentMenu);
+        $tplContentLines[$lines-5] = $tplContentMenu;
+        $tplContent = implode(PHP_EOL, $tplContentLines);
+        file_put_contents($partialPath . '/_left_sidebar.blade.php', $tplContent);
 
         // Index
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/views/index.tpl");
         $tplContent = str_replace("{{Page}}", $pageStudly, $tplContent);
+        $skips = ['created_at', 'updated_at', 'password', 'remember_token'];
+        $data = '<tr>'.PHP_EOL;
+        foreach ($columns as $column) {
+            if(!in_array($column, $skips)) {
+                $thName = str_replace('_', ' ', ucfirst($column));
+                $data .= "                    <th>$thName</th>".PHP_EOL;
+            }
+        }
+        $data .= '                <tr>'.PHP_EOL;
+        $data .= '                @if(!empty($data))'.PHP_EOL;
+        $data .= '                  @foreach($data as $item)'.PHP_EOL;
+        foreach ($columns as $column) {
+            if(!in_array($column, $skips)) {
+                $data .= '                    <td>{{$item->' . $column . '}}</td>' . PHP_EOL;
+            }
+        }
+        $data .= '                  @endforeach' . PHP_EOL;
+        $data .= '                @endif';
+        $tplContent = str_replace("{{data}}", $data, $tplContent);
         file_put_contents($viewPath.'/index.blade.php', $tplContent);
         $this->info('-> ' . $viewPath.'/index.blade.php');
 
@@ -238,6 +285,7 @@ class GenerateCommand extends Command
     /**
      * @param $model
      * @param $table
+     * @return mixed
      */
     private function makeModel($model, $table) {
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/models/model.tpl");
@@ -257,5 +305,7 @@ class GenerateCommand extends Command
         file_put_contents($modelPath, $tplContent);
         $this->info('-> ' . $modelPath);
         $this->info('');
+
+        return $columns;
     }
 }
