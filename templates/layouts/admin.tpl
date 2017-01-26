@@ -12,6 +12,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
     <!-- Ionicons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="{{url('/')}}/themes/admin/plugins/iCheck/all.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{url('/')}}/themes/admin/dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -65,11 +67,13 @@
 <script src="{{url('/')}}/themes/admin/bootstrap/js/bootstrap.min.js"></script>
 <!-- Slimscroll -->
 <script src="{{url('/')}}/themes/admin/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- iCheck 1.0.1 -->
+<script src="{{url('/')}}/themes/admin/plugins/iCheck/icheck.min.js"></script>
 <!-- FastClick -->
 <script src="{{url('/')}}/themes/admin/plugins/fastclick/fastclick.js"></script>
 <!-- AdminLTE App -->
 <script src="{{url('/')}}/themes/admin/dist/js/app.min.js"></script>
-<!-- AdminLTE for demo purposes -->
-<script src="{{url('/')}}/themes/admin/dist/js/demo.js"></script>
+<!-- AdminLTE for admin purposes -->
+<script src="{{url('/')}}/themes/admin/dist/js/admin.js"></script>
 </body>
 </html>

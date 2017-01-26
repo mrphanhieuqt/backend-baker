@@ -28,28 +28,30 @@
     </div>
     <!-- /.box -->
 
-
-    <div class="box box-info">
-        <div class="box-header with-border">
-            <h3 class="box-title">{{Page}} List</h3>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-            <div class="text-right" style="margin-bottom: 10px;">
-                <a class="btn btn-info" href="{{action('{{Page}}Controller@add')}}">Add</a>
+    <form method="post" action="{{action('{{Page}}Controller@delete')}}">
+        <div class="box box-info">
+            <div class="box-header with-border">
+                <h3 class="box-title">{{Page}} List</h3>
             </div>
-            <table class="table table-responsive no-padding">
-                {{data}}
-            </table>
+            <!-- /.box-header -->
+            <div class="box-body">
+                <div class="text-left" style="margin-bottom: 10px;">
+                    <a class="btn btn-info" href="{{action('{{Page}}Controller@add')}}">Add</a>
+                    <a class="btn btn-danger" href="javascript:void(0);">Delete</a>
+                </div>
+                <table class="table table-responsive no-padding">
+                    {{data}}
+                </table>
+            </div>
+            <!-- /.box-body -->
+            <div class="box-footer clearfix">
+                @if($data->total() > 0)
+                <div class="pull-left col-xs-5 text-left">({{$data->firstItem()}}-{{$data->lastItem()}}/{{$data->total()}})</div>
+                @endif
+                <div class="pull-right col-xs-5 text-right">{!! $data->links() !!}</div>
+            </div>
         </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix">
-            @if($data->total() > 0)
-            <div class="pull-left col-xs-5 text-left">({{$data->firstItem()}}-{{$data->lastItem()}}/{{$data->total()}})</div>
-            @endif
-            <div class="pull-right col-xs-5 text-right">{!! $data->links() !!}</div>
-        </div>
-    </div>
+    </form>
     <!-- /.box -->
 </section>
 <!-- /.content -->

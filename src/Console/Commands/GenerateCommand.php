@@ -99,7 +99,11 @@ class GenerateCommand extends Command
         }
 
         $verFile = $dst . '.ver';
-        if(!file_exists($verFile)) {
+        $copyFlg = !file_exists($verFile);
+        if(!$copyFlg) {
+            $copyFlg = $this->confirm('Resources already exist. Do you want to overwrite them ?');
+        }
+        if($copyFlg) {
             $this->recurseCopy($src.'bootstrap', $dst.'bootstrap');
             $this->recurseCopy($src.'dist', $dst.'dist');
             $this->recurseCopy($src.'plugins', $dst.'plugins');
@@ -195,7 +199,11 @@ class GenerateCommand extends Command
         $controllerName = $pageStudly.'Controller';
 
         // Layout
-        if(!file_exists($layoutPath.'/admin.blade.php')) {
+        $createFlg = !file_exists($layoutPath.'/admin.blade.php');
+        if(!$createFlg) {
+            $createFlg = $this->confirm("Layouts already exist. Do you want to overwrite them ?");
+        }
+        if($createFlg) {
             $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/layouts/admin.tpl");
             file_put_contents($layoutPath.'/admin.blade.php', $tplContent);
             $this->info('-> ' . $layoutPath.'/admin.blade.php');
@@ -227,7 +235,7 @@ class GenerateCommand extends Command
         $tplContent = str_replace("{{Page}}", $pageStudly, $tplContent);
         $skips = ['id', 'created_at', 'updated_at', 'password', 'remember_token'];
         $data = '<tr>' . PHP_EOL;
-        $data .= '                    <th><input type="checkbox" name="select_all" value="on"></th>' . PHP_EOL;
+        $data .= '                    <th><input type="checkbox" class="minimal" name="select_all" value="on"></th>' . PHP_EOL;
         foreach ($columns as $column) {
             if(!in_array($column, $skips)) {
                 $thName = str_replace('_', ' ', ucfirst($column));
@@ -239,7 +247,7 @@ class GenerateCommand extends Command
         $data .= '                @if(!empty($data))'.PHP_EOL;
         $data .= '                  @foreach($data as $item)'.PHP_EOL;
         $data .= '                    <tr>'.PHP_EOL;
-        $data .= '                        <td><input type="checkbox" name="select_item" value="{{$item->id}}"></td>'.PHP_EOL;
+        $data .= '                        <td><input type="checkbox"  class="minimal" name="select_item" value="{{$item->id}}"></td>'.PHP_EOL;
         foreach ($columns as $column) {
             if(!in_array($column, $skips)) {
                 $data .= '                        <td>{{$item->' . $column . '}}</td>' . PHP_EOL;
