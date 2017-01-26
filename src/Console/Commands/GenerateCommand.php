@@ -295,9 +295,15 @@ class GenerateCommand extends Command
         $tplContent = str_replace("{{Page}}", $pageStudly, $tplContent);
 
         $controllerPath = app_path('Http/Controllers').'/'.$pageStudly.'Controller.php';
-        file_put_contents($controllerPath, $tplContent);
-        $this->info('-> ' . $controllerPath);
-        $this->info('');
+        $createFlg = !file_exists($controllerPath);
+        if(!$createFlg) {
+            $createFlg = $this->confirm($pageStudly."Controller already exists. Do you want to overwrite it ?");
+        }
+        if($createFlg) {
+            file_put_contents($controllerPath, $tplContent);
+            $this->info('-> ' . $controllerPath);
+            $this->info('');
+        }
     }
 
     /**
@@ -320,10 +326,15 @@ class GenerateCommand extends Command
         $tplContent = str_replace("{{fillable}}", $fillable, $tplContent);
 
         $modelPath = app_path().'/'.$model.'.php';
-        file_put_contents($modelPath, $tplContent);
-        $this->info('-> ' . $modelPath);
-        $this->info('');
-
+        $createFlg = !file_exists($modelPath);
+        if(!$createFlg) {
+            $createFlg = $this->confirm("$model model already exists. Do you want to overwrite it ?");
+        }
+        if($createFlg) {
+            file_put_contents($modelPath, $tplContent);
+            $this->info('-> ' . $modelPath);
+            $this->info('');
+        }
         return $columns;
     }
 }

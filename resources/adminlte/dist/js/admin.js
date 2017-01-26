@@ -11,19 +11,19 @@ $(document).ready(function () {
         }
         itemEventFlg = false;
     });
-    $('input[type="checkbox"][name="select_all"].minimal').on('ifUnchecked', function (e) {
+    $('input[type="checkbox"][name="select_all"].minimal').on('ifUnchecked', function() {
         if(!itemEventFlg) {
             $('input[type="checkbox"][name="select_item"].minimal').iCheck('uncheck');
         }
         itemEventFlg = false;
     });
-    $('input[type="checkbox"][name="select_item"].minimal').on('ifChecked', function (e) {
+    $('input[type="checkbox"][name="select_item"].minimal').on('ifChecked', function() {
         itemEventFlg = true;
         var numOfItems = $('input[type="checkbox"][name="select_item"].minimal').length;
         var checkedItems = $('input[type="checkbox"][name="select_item"].minimal:checked').length;
         $('input[type="checkbox"][name="select_all"].minimal').iCheck((numOfItems-checkedItems <= 0) ? 'check' : 'uncheck');
     });
-    $('input[type="checkbox"][name="select_item"].minimal').on('ifUnchecked', function (e) {
+    $('input[type="checkbox"][name="select_item"].minimal').on('ifUnchecked', function() {
         itemEventFlg = true;
         var numOfItems = $('input[type="checkbox"][name="select_item"].minimal').length;
         var checkedItems = $('input[type="checkbox"][name="select_item"].minimal:checked').length;

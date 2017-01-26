@@ -14,20 +14,6 @@
 
 <!-- Main content -->
 <section class="content">
-    <div class="box box-info">
-        <div class="box-header with-border">
-            <h3 class="box-title">Search</h3>
-        </div>
-        <!-- /.box-header -->
-        <div class="box-body">
-
-        </div>
-        <!-- /.box-body -->
-        <div class="box-footer clearfix">
-        </div>
-    </div>
-    <!-- /.box -->
-
     <form method="post" action="{{action('{{Page}}Controller@delete')}}">
         <div class="box box-info">
             <div class="box-header with-border">
