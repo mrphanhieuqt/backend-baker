@@ -247,7 +247,7 @@ class GenerateCommand extends Command
         $data .= '                @if(!empty($data))'.PHP_EOL;
         $data .= '                  @foreach($data as $item)'.PHP_EOL;
         $data .= '                    <tr>'.PHP_EOL;
-        $data .= '                        <td><input type="checkbox"  class="minimal" name="select_item" value="{{$item->id}}"></td>'.PHP_EOL;
+        $data .= '                        <td><input type="checkbox"  class="minimal select_item" name="id[]" value="{{$item->id}}"></td>'.PHP_EOL;
         foreach ($columns as $column) {
             if(!in_array($column, $skips)) {
                 $data .= '                        <td>{{$item->' . $column . '}}</td>' . PHP_EOL;

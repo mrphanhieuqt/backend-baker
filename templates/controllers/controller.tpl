@@ -40,6 +40,13 @@ class {{Page}}Controller extends Controller
     /**
     * @param Request $request
     */
-    public function delete(Request $request, $id) {
+    public function delete(Request $request) {
+        $ids = $request->get('id', []);
+        if(!is_array($ids)) {
+            $ids = [$ids];
+        }
+        {{Model}}::whereIn('id', $ids)->delete();
+        $referrer = $request->headers->get('referer');
+        return back();
     }
 }

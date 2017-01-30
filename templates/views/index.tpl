@@ -15,6 +15,7 @@
 <!-- Main content -->
 <section class="content">
     <form method="post" action="{{action('{{Page}}Controller@delete')}}">
+        {{ csrf_field() }}
         <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title">{{Page}} List</h3>
@@ -23,7 +24,7 @@
             <div class="box-body">
                 <div class="text-left" style="margin-bottom: 10px;">
                     <a class="btn btn-info" href="{{action('{{Page}}Controller@add')}}">Add</a>
-                    <a class="btn btn-danger" href="javascript:void(0);">Delete</a>
+                    <a class="btn btn-danger" href="javascript:void(0);" onclick="doDelete(this);">Delete</a>
                 </div>
                 <table class="table table-responsive no-padding">
                     {{data}}
