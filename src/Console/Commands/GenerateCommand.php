@@ -270,16 +270,39 @@ class GenerateCommand extends Command
 
         // Form
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/views/_form.tpl");
+        $data = '';
+        $skips = ['id', 'created_at', 'updated_at', 'remember_token'];
+        foreach ($columns as $column) {
+            if(!in_array($column, $skips)) {
+                $thName = str_replace('_', ' ', ucfirst($column));
+                $type = 'text';
+                if($column == 'password') {
+                    $type = 'password';
+                }
+
+                $data .= '<div class="form-group">';
+                $data .= '    <label for="'.$column.'">'.$thName.'</label>';
+                $data .= '    <input type="'.$type.'" class="form-control" name="'.$column.'" value="{{ old(\''.$column.'\') }}">';
+                $data .= '</div>';
+            }
+        }
+        $tplContent = str_replace("{{page}}", $page, $tplContent);
+        $tplContent = str_replace("{{Page}}", $pageStudly, $tplContent);
+        $tplContent = str_replace("{{data}}", $data, $tplContent);
         file_put_contents($viewPath.'/_form.blade.php', $tplContent);
         $this->info('-> ' . $viewPath.'/_form.blade.php');
 
         // Add
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/views/add.tpl");
+        $tplContent = str_replace("{{page}}", $page, $tplContent);
+        $tplContent = str_replace("{{Page}}", $pageStudly, $tplContent);
         file_put_contents($viewPath.'/add.blade.php', $tplContent);
         $this->info('-> ' . $viewPath.'/add.blade.php');
 
         // Edit
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/views/edit.tpl");
+        $tplContent = str_replace("{{page}}", $page, $tplContent);
+        $tplContent = str_replace("{{Page}}", $pageStudly, $tplContent);
         file_put_contents($viewPath.'/edit.blade.php', $tplContent);
         $this->info('-> ' . $viewPath.'/edit.blade.php');
 

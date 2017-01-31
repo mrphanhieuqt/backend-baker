@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\{{Model}};
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Validator;
 
 class {{Page}}Controller extends Controller
 {
@@ -23,6 +24,19 @@ class {{Page}}Controller extends Controller
     * @return View
     */
     public function add(Request $request) {
+        if($request->isMethod('post')) {
+            $validator = Validator::make($request->all(), [
+            ]);
+
+            if (!$validator->fails()) {
+                $s = {{Model}}::create($request->all());
+                if(!empty($s)) {
+                    $request->session()->flash('success', trans('admin::messages.add.success'));
+                    return redirect()->action('Admin\{{Page}}Controller@edit', ['id' => $s->id]);
+                }
+            }
+        }
+
         $data = null;
         return view('admin.{{page}}.add', ['data' => $data]);
     }

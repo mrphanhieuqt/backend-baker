@@ -14,27 +14,28 @@
 
 <!-- Main content -->
 <section class="content">
-    @if(Session::has('success'))
-    <div class="alert alert-success alert-dismissible" role="alert">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        {{ Session::get('success') }}
-    </div>
-    @elseif(Session::has('error'))
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4><i class="icon fa fa-ban"></i> {{ trans('admin::messages.error') }}:</h4>
-        {{ Session::get('error') }}
-    </div>
-    @elseif(isset($errorMsg))
-    <div class="alert alert-danger alert-dismissible">
-        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4><i class="icon fa fa-ban"></i> {{ trans('admin::messages.error') }}:</h4>
-        {!! $errorMsg !!}
-    </div>
-    @endif
-
     <form method="post" action="{{action('Admin\{{Page}}Controller@delete')}}">
         {{ csrf_field() }}
+
+        @if(Session::has('success'))
+        <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            {{ Session::get('success') }}
+        </div>
+        @elseif(Session::has('error'))
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-ban"></i> {{ trans('admin::messages.error') }}:</h4>
+            {{ Session::get('error') }}
+        </div>
+        @elseif(isset($errorMsg))
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h4><i class="icon fa fa-ban"></i> {{ trans('admin::messages.error') }}:</h4>
+            {!! $errorMsg !!}
+        </div>
+        @endif
+
         <div class="box box-info">
             <div class="box-header with-border">
                 <h3 class="box-title">{{Page}} List</h3>
