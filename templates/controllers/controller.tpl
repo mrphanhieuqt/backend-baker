@@ -1,9 +1,8 @@
 <?php
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
 use App\{{Model}};
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 
 class {{Page}}Controller extends Controller
@@ -16,7 +15,7 @@ class {{Page}}Controller extends Controller
         $limit = env('APP_NUM_PER_PAGE');
         $data = {{Model}}::paginate($limit);
 
-        return view('{{page}}.index', ['data' => $data]);
+        return view('admin.{{page}}.index', ['data' => $data]);
     }
 
     /**
@@ -25,7 +24,7 @@ class {{Page}}Controller extends Controller
     */
     public function add(Request $request) {
         $data = null;
-        return view('{{page}}.add', ['data' => $data]);
+        return view('admin.{{page}}.add', ['data' => $data]);
     }
 
     /**
@@ -34,7 +33,7 @@ class {{Page}}Controller extends Controller
     */
     public function edit(Request $request, $id) {
         $data = {{Model}}::find($id);
-        return view('{{page}}.edit', ['data' => $data]);
+        return view('admin.{{page}}.edit', ['data' => $data]);
     }
 
     /**
@@ -46,10 +45,10 @@ class {{Page}}Controller extends Controller
             $ids = [$ids];
         }
         $n = {{Model}}::whereIn('id', $ids)->delete();
-        if($n > 0) {
-            $request->session()->flash('success', trans('admin::messages.delete.success.1'));
-        } elseif($n == 1) {
+        if($n > 1) {
             $request->session()->flash('success', trans('admin::messages.delete.success.2', ['num' => $n]));
+        } elseif($n == 1) {
+            $request->session()->flash('success', trans('admin::messages.delete.success.1'));
         } else {
             $request->session()->flash('error', trans('admin::messages.delete.error'));
         }

@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.layouts.admin')
 
 @section('page-title', '{{Page}}')
 
@@ -22,18 +22,18 @@
     @elseif(Session::has('error'))
     <div class="alert alert-danger alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4><i class="icon fa fa-ban"></i> Error:</h4>
+        <h4><i class="icon fa fa-ban"></i> {{ trans('admin::messages.error') }}:</h4>
         {{ Session::get('error') }}
     </div>
     @elseif(isset($errorMsg))
     <div class="alert alert-danger alert-dismissible">
         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-        <h4><i class="icon fa fa-ban"></i> Error:</h4>
+        <h4><i class="icon fa fa-ban"></i> {{ trans('admin::messages.error') }}:</h4>
         {!! $errorMsg !!}
     </div>
     @endif
 
-    <form method="post" action="{{action('{{Page}}Controller@delete')}}">
+    <form method="post" action="{{action('Admin\{{Page}}Controller@delete')}}">
         {{ csrf_field() }}
         <div class="box box-info">
             <div class="box-header with-border">
@@ -42,7 +42,7 @@
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="text-left" style="margin-bottom: 10px;">
-                    <a class="btn btn-info" href="{{action('{{Page}}Controller@add')}}">{{ trans('admin::messages.add') }}</a>
+                    <a class="btn btn-info" href="{{action('Admin\{{Page}}Controller@add')}}">{{ trans('admin::messages.add') }}</a>
                     <a class="btn btn-danger btn-delete-selected disabled" href="javascript:void(0);">{{ trans('admin::messages.delete') }}</a>
                 </div>
                 <table class="table table-responsive no-padding">

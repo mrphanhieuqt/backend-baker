@@ -62,7 +62,7 @@
         </nav>
     </header>
 
-    @include('layouts.partials._left_sidebar')
+    @include('admin.layouts.partials._left_sidebar')
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">

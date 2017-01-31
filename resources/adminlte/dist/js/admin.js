@@ -68,26 +68,33 @@ $(document).ready(function () {
         }
     });
 
-    $('.btn-delete-selected:not(.disabled)').confirm({
-        icon: 'fa fa-warning',
-        title: MSG.DELETE,
-        content: MSG.DELETE_CONFIRM,
-        type: 'orange',
-        typeAnimated: true,
-        buttons: {
-            yes: {
-                text: MSG.YES,
-                btnClass: 'btn-red',
-                action: function () {
-                    this.$target.closest('form').submit();
-                }
-            },
-            no: {
-                text: MSG.NO,
-                action: function () {
-                    // do nothing
+    $('.btn-delete-selected').on('click', function () {
+        if($(this).hasClass('disabled')) {
+            return false;
+        }
+        var $target = $(this);
+
+        $.confirm({
+            icon: 'fa fa-warning',
+            title: MSG.DELETE,
+            content: MSG.DELETE_CONFIRM,
+            type: 'orange',
+            typeAnimated: true,
+            buttons: {
+                yes: {
+                    text: MSG.YES,
+                    btnClass: 'btn-red',
+                    action: function () {
+                        $target.closest('form').submit();
+                    }
+                },
+                no: {
+                    text: MSG.NO,
+                    action: function () {
+                        // do nothing
+                    }
                 }
             }
-        }
+        });
     });
 });

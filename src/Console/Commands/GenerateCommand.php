@@ -180,17 +180,21 @@ class GenerateCommand extends Command
      * @param $page
      */
     private function makeView($page, $columns) {
-        $viewPath = resource_path("views/$page");
+        if(!file_exists(resource_path("views/admin"))) {
+            mkdir(resource_path("views/admin"));
+        }
+
+        $viewPath = resource_path("views/admin/$page");
         if(!file_exists($viewPath)) {
             mkdir($viewPath);
         }
 
-        $layoutPath = resource_path("views/layouts");
+        $layoutPath = resource_path("views/admin/layouts");
         if(!file_exists($layoutPath)) {
             mkdir($layoutPath);
         }
 
-        $partialPath = resource_path("views/layouts/partials");
+        $partialPath = resource_path("views/admin/layouts/partials");
         if(!file_exists($partialPath)) {
             mkdir($partialPath);
         }
@@ -254,8 +258,8 @@ class GenerateCommand extends Command
             }
         }
         $data .= '                        <td class="text-right">'.PHP_EOL;
-        $data .= '                          <a class="btn btn-info" href="{{action(\''.$controllerName.'@edit\', [\'id\'=>$item->id])}}">{{ trans(\'admin::messages.edit\') }}</a>'.PHP_EOL;
-        $data .= '                          <a class="btn btn-danger btn-delete" href="{{action(\''.$controllerName.'@delete\', [\'id\'=>$item->id])}}">{{ trans(\'admin::messages.delete\') }}</a>'.PHP_EOL;
+        $data .= '                          <a class="btn btn-info" href="{{action(\'Admin\\'.$controllerName.'@edit\', [\'id\'=>$item->id])}}">{{ trans(\'admin::messages.edit\') }}</a>'.PHP_EOL;
+        $data .= '                          <a class="btn btn-danger btn-delete" href="{{action(\'Admin\\'.$controllerName.'@delete\', [\'id\'=>$item->id])}}">{{ trans(\'admin::messages.delete\') }}</a>'.PHP_EOL;
         $data .= '                        </td>' . PHP_EOL;
         $data .= '                    <tr/>'.PHP_EOL;
         $data .= '                  @endforeach' . PHP_EOL;
@@ -294,7 +298,11 @@ class GenerateCommand extends Command
         $tplContent = str_replace("{{page}}", $page, $tplContent);
         $tplContent = str_replace("{{Page}}", $pageStudly, $tplContent);
 
-        $controllerPath = app_path('Http/Controllers').'/'.$pageStudly.'Controller.php';
+        if(!file_exists(app_path('Http/Controllers/Admin'))) {
+            mkdir(app_path('Http/Controllers/Admin'));
+        }
+
+        $controllerPath = app_path('Http/Controllers/Admin').'/'.$pageStudly.'Controller.php';
         $createFlg = !file_exists($controllerPath);
         if(!$createFlg) {
             $createFlg = $this->confirm($pageStudly."Controller already exists. Do you want to overwrite it ?");
