@@ -38,5 +38,6 @@ function doDelete(_this) {
     if($(_this).hasClass('disabled')) {
         return false;
     }
+
     $(_this).closest('form').submit();
 }

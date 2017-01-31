@@ -45,8 +45,14 @@ class {{Page}}Controller extends Controller
         if(!is_array($ids)) {
             $ids = [$ids];
         }
-        {{Model}}::whereIn('id', $ids)->delete();
-        $referrer = $request->headers->get('referer');
+        $n = {{Model}}::whereIn('id', $ids)->delete();
+        if($n > 0) {
+            $request->session()->flash('success', trans('admin::messages.delete.success.1'));
+        } elseif($n == 1) {
+            $request->session()->flash('success', trans('admin::messages.delete.success.2', ['num' => $n]));
+        }
+            $request->session()->flash('error', trans('admin::messages.delete.error'));
+        }
         return back();
     }
 }
