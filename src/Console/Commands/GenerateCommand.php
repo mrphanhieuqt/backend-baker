@@ -254,8 +254,8 @@ class GenerateCommand extends Command
             }
         }
         $data .= '                        <td class="text-right">'.PHP_EOL;
-        $data .= '                          <a class="btn btn-info" href="{{action(\''.$controllerName.'@edit\', [\'id\'=>$item->id])}}">Edit</a>'.PHP_EOL;
-        $data .= '                          <a class="btn btn-danger" href="{{action(\''.$controllerName.'@delete\', [\'id\'=>$item->id])}}">Delete</a>'.PHP_EOL;
+        $data .= '                          <a class="btn btn-info" href="{{action(\''.$controllerName.'@edit\', [\'id\'=>$item->id])}}">{{ trans(\'admin::messages.edit\') }}</a>'.PHP_EOL;
+        $data .= '                          <a class="btn btn-danger btn-delete" href="{{action(\''.$controllerName.'@delete\', [\'id\'=>$item->id])}}">{{ trans(\'admin::messages.delete\') }}</a>'.PHP_EOL;
         $data .= '                        </td>' . PHP_EOL;
         $data .= '                    <tr/>'.PHP_EOL;
         $data .= '                  @endforeach' . PHP_EOL;

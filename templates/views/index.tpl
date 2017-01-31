@@ -42,8 +42,8 @@
             <!-- /.box-header -->
             <div class="box-body">
                 <div class="text-left" style="margin-bottom: 10px;">
-                    <a class="btn btn-info" href="{{action('{{Page}}Controller@add')}}">Add</a>
-                    <a class="btn btn-danger" href="javascript:void(0);" onclick="doDelete(this);">Delete</a>
+                    <a class="btn btn-info" href="{{action('{{Page}}Controller@add')}}">{{ trans('admin::messages.add') }}</a>
+                    <a class="btn btn-danger btn-delete-selected disabled" href="javascript:void(0);">{{ trans('admin::messages.delete') }}</a>
                 </div>
                 <table class="table table-responsive no-padding">
                     {{data}}

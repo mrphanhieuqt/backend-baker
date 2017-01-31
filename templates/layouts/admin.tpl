@@ -9,11 +9,13 @@
     <!-- Bootstrap 3.3.6 -->
     <link rel="stylesheet" href="{{url('/')}}/themes/admin/bootstrap/css/bootstrap.min.css">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{url('/')}}/themes/admin/plugins/font-awesome/css/font-awesome.min.css">
     <!-- Ionicons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <link rel="stylesheet" href="{{url('/')}}/themes/admin/plugins/ionicons/css/ionicons.min.css">
     <!-- iCheck for checkboxes and radio inputs -->
     <link rel="stylesheet" href="{{url('/')}}/themes/admin/plugins/iCheck/all.css">
+    <!-- jquery-confirm -->
+    <link rel="stylesheet" href="{{url('/')}}/themes/admin/plugins/jquery-confirm/jquery-confirm.min.css">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{url('/')}}/themes/admin/dist/css/AdminLTE.min.css">
     <!-- AdminLTE Skins. Choose a skin from the css/skins
@@ -29,7 +31,12 @@
 
     <script type="text/javascript">
         // GLOBAL MESSAGES
-        var DELETE_CONFIRM = '{{ trans('admin::messages.delete.confirm') }}';
+        var MSG = {
+            "YES": "{{ trans('admin::messages.yes') }}",
+            "NO": "{{ trans('admin::messages.no') }}",
+            "DELETE": "{{ trans('admin::messages.delete') }}",
+            "DELETE_CONFIRM" : "{{ trans('admin::messages.delete.confirm') }}"
+        };
     </script>
 </head>
 <body class="hold-transition skin-blue sidebar-mini">
@@ -72,6 +79,8 @@
 <script src="{{url('/')}}/themes/admin/bootstrap/js/bootstrap.min.js"></script>
 <!-- Slimscroll -->
 <script src="{{url('/')}}/themes/admin/plugins/slimScroll/jquery.slimscroll.min.js"></script>
+<!-- jquery-confirm 3.0.3 -->
+<script src="{{url('/')}}/themes/admin/plugins/jquery-confirm/jquery-confirm.min.js"></script>
 <!-- iCheck 1.0.1 -->
 <script src="{{url('/')}}/themes/admin/plugins/iCheck/icheck.min.js"></script>
 <!-- FastClick -->
