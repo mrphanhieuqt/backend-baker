@@ -2,6 +2,7 @@
     "name": "mrphanhieuqt/backendbaker",
     "description": "This is a Laravel's library that helps to make backend quickly.",
     "type": "library",
+    "version" : "0.0.1-dev",
     "license": "MIT",
     "authors": [
         {
