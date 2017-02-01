@@ -64,6 +64,9 @@ class GenerateCommand extends Command
      * @param $table
      */
     private function genereateOnePage($name, $table) {
+        // $tableDetails = \DB::connection()->getDoctrineSchemaManager()->listTableDetails($table);
+        // dd($tableDetails);
+
         $model = str_singular(studly_case($table));
 
         $this->info("Start to generate {$name} page from table {$table} ...");
@@ -72,7 +75,8 @@ class GenerateCommand extends Command
         $this->copyResources();
 
         $this->info("Making {$model} model from table {$table} ...");
-        $columns = $this->makeModel($model, $table);
+        $columns = \DB::connection()->getSchemaBuilder()->getColumnListing($table);
+        $this->makeModel($model, $table, $columns);
 
         $controllerName = studly_case($name).'Controller';
         $this->info("Making {$controllerName} ...");
@@ -348,12 +352,11 @@ class GenerateCommand extends Command
      * @param $table
      * @return mixed
      */
-    private function makeModel($model, $table) {
+    private function makeModel($model, $table, $columns) {
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/models/model.tpl");
         $tplContent = str_replace("{{Model}}", $model, $tplContent);
         $tplContent = str_replace("{{table}}", $table, $tplContent);
 
-        $columns = \DB::connection()->getSchemaBuilder()->getColumnListing($table);
         $fillable = "[]";
         if(!empty($columns)) {
             $brl = PHP_EOL;
@@ -372,6 +375,5 @@ class GenerateCommand extends Command
             $this->info('-> ' . $modelPath);
             $this->info('');
         }
-        return $columns;
     }
 }
