@@ -64,8 +64,8 @@ class GenerateCommand extends Command
      * @param $table
      */
     private function genereateOnePage($name, $table) {
-        // $tableDetails = \DB::connection()->getDoctrineSchemaManager()->listTableDetails($table);
-        // dd($tableDetails);
+        $tableDetails = \DB::connection()->getDoctrineSchemaManager()->listTableDetails($table);
+        $columns = $tableDetails->getColumns();
 
         $model = str_singular(studly_case($table));
 
@@ -75,8 +75,8 @@ class GenerateCommand extends Command
         $this->copyResources();
 
         $this->info("Making {$model} model from table {$table} ...");
-        $columns = \DB::connection()->getSchemaBuilder()->getColumnListing($table);
-        $this->makeModel($model, $table, $columns);
+        $columnNames = array_keys($columns);
+        $this->makeModel($model, $table, $columnNames);
 
         $controllerName = studly_case($name).'Controller';
         $this->info("Making {$controllerName} ...");
@@ -244,7 +244,8 @@ class GenerateCommand extends Command
         $skips = ['id', 'created_at', 'updated_at', 'password', 'remember_token'];
         $data = '<tr>' . PHP_EOL;
         $data .= '                    <th><input type="checkbox" class="minimal" name="select_all" value="on"></th>' . PHP_EOL;
-        foreach ($columns as $column) {
+        $columnNames = array_keys($columns);
+        foreach ($columnNames as $column) {
             if(!in_array($column, $skips)) {
                 $thName = str_replace('_', ' ', ucfirst($column));
                 $data .= "                    <th>$thName</th>".PHP_EOL;
@@ -256,7 +257,7 @@ class GenerateCommand extends Command
         $data .= '                  @foreach($data as $item)'.PHP_EOL;
         $data .= '                    <tr>'.PHP_EOL;
         $data .= '                        <td><input type="checkbox"  class="minimal select_item" name="id[]" value="{{$item->id}}"></td>'.PHP_EOL;
-        foreach ($columns as $column) {
+        foreach ($columnNames as $column) {
             if(!in_array($column, $skips)) {
                 $data .= '                        <td>{{$item->' . $column . '}}</td>' . PHP_EOL;
             }
@@ -276,12 +277,12 @@ class GenerateCommand extends Command
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/views/_form.tpl");
         $data = '';
         $skips = ['created_at', 'updated_at', 'remember_token'];
-        foreach ($columns as $column) {
+        foreach ($columns as $column => $columnDetail) {
             if(!in_array($column, $skips)) {
                 if($column == 'id') {
-                    $data .= '    @if($isEdit)'.PHP_EOL;
-                    $data .= '        <input type="hidden" name="'.$column.'" value="{{ $data->'.$column.' }}">'.PHP_EOL;
-                    $data .= '    @endif'.PHP_EOL;
+                    $data .= '@if($isEdit)'.PHP_EOL;
+                    $data .= '            <input type="hidden" name="'.$column.'" value="{{ $data->'.$column.' }}">'.PHP_EOL;
+                    $data .= '        @endif'.PHP_EOL;
                 } else {
                     $thName = str_replace('_', ' ', ucfirst($column));
                     $type = 'text';
@@ -289,10 +290,10 @@ class GenerateCommand extends Command
                         $type = 'password';
                     }
 
-                    $data .= '    <div class="form-group">'.PHP_EOL;
-                    $data .= '        <label for="'.$column.'">'.$thName.'</label>'.PHP_EOL;
-                    $data .= '        <input type="'.$type.'" class="form-control" name="'.$column.'" value="{{ old(\''.$column.'\', $data->'.$column.') }}">'.PHP_EOL;
-                    $data .= '    </div>'.PHP_EOL;
+                    $data .= '        <div class="form-group">'.PHP_EOL;
+                    $data .= '            <label for="'.$column.'">'.$thName.'</label>'.PHP_EOL;
+                    $data .= '            <input type="'.$type.'" class="form-control" name="'.$column.'" value="{{ old(\''.$column.'\', isset($data->'.$column.')?$data->'.$column.':\'\') }}">'.PHP_EOL;
+                    $data .= '        </div>'.PHP_EOL;
                 }
             }
         }
@@ -350,7 +351,7 @@ class GenerateCommand extends Command
     /**
      * @param $model
      * @param $table
-     * @return mixed
+     * @param $columns
      */
     private function makeModel($model, $table, $columns) {
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/models/model.tpl");
@@ -364,6 +365,12 @@ class GenerateCommand extends Command
         }
 
         $tplContent = str_replace("{{fillable}}", $fillable, $tplContent);
+
+        $timestamps = "";
+        if((!in_array('created_at', $columns)) || (!in_array('updated_at', $columns))) {
+            $timestamps = PHP_EOL.'public $timestamps = false;'.PHP_EOL;
+        }
+        $tplContent = str_replace("{{timestamps}}", $timestamps, $tplContent);
 
         $modelPath = app_path().'/'.$model.'.php';
         $createFlg = !file_exists($modelPath);
