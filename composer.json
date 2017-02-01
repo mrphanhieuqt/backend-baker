@@ -1,6 +1,7 @@
 {
     "name": "mrphanhieuqt/backendbaker",
     "description": "This is a Laravel's library that helps to make backend quickly.",
+    "keywords": ["admin", "backend"],
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -13,5 +14,10 @@
     "require": {
         "php": "^5.6.0 || ^7.0",
         "doctrine/dbal": "~2.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "BackendBaker\\": "src/"
+        }
     }
 }
