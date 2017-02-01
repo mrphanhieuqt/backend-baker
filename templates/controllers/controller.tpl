@@ -47,6 +47,20 @@ class {{Page}}Controller extends Controller
     */
     public function edit(Request $request, $id) {
         $data = {{Model}}::find($id);
+
+        if($request->isMethod('post')) {
+            $validator = Validator::make($request->all(), [
+            ]);
+
+            if (!$validator->fails()) {
+                $s = $data->update($request->all());
+                if($s) {
+                    $request->session()->flash('success', trans('admin::messages.edit.success'));
+                    return redirect()->action('Admin\{{Page}}Controller@edit', ['id' => $id]);
+                }
+            }
+        }
+
         return view('admin.{{page}}.edit', ['data' => $data]);
     }
 

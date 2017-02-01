@@ -271,19 +271,25 @@ class GenerateCommand extends Command
         // Form
         $tplContent = file_get_contents(dirname(__FILE__)."/../../../templates/views/_form.tpl");
         $data = '';
-        $skips = ['id', 'created_at', 'updated_at', 'remember_token'];
+        $skips = ['created_at', 'updated_at', 'remember_token'];
         foreach ($columns as $column) {
             if(!in_array($column, $skips)) {
-                $thName = str_replace('_', ' ', ucfirst($column));
-                $type = 'text';
-                if($column == 'password') {
-                    $type = 'password';
-                }
+                if($column == 'id') {
+                    $data .= '    @if($isEdit)'.PHP_EOL;
+                    $data .= '        <input type="hidden" name="'.$column.'" value="{{ $data->'.$column.' }}">'.PHP_EOL;
+                    $data .= '    @endif'.PHP_EOL;
+                } else {
+                    $thName = str_replace('_', ' ', ucfirst($column));
+                    $type = 'text';
+                    if($column == 'password') {
+                        $type = 'password';
+                    }
 
-                $data .= '<div class="form-group">';
-                $data .= '    <label for="'.$column.'">'.$thName.'</label>';
-                $data .= '    <input type="'.$type.'" class="form-control" name="'.$column.'" value="{{ old(\''.$column.'\') }}">';
-                $data .= '</div>';
+                    $data .= '    <div class="form-group">'.PHP_EOL;
+                    $data .= '        <label for="'.$column.'">'.$thName.'</label>'.PHP_EOL;
+                    $data .= '        <input type="'.$type.'" class="form-control" name="'.$column.'" value="{{ old(\''.$column.'\', $data->'.$column.') }}">'.PHP_EOL;
+                    $data .= '    </div>'.PHP_EOL;
+                }
             }
         }
         $tplContent = str_replace("{{page}}", $page, $tplContent);
